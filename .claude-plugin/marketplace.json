@@ -1,0 +1,14 @@
+{
+  "name": "jasbir-enterprise",
+  "description": "Claude Code plugins for enterprise Java and Spring Boot development",
+  "owner": {
+    "name": "Jasbir Singh"
+  },
+  "plugins": [
+    {
+      "name": "enterprise-spring-boot",
+      "source": "./",
+      "description": "Enterprise Spring Boot 4.x development with agents, skills, and commands for distributed and event-driven systems"
+    }
+  ]
+}

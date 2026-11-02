@@ -1,0 +1,59 @@
+{
+  "realm": "orders",
+  "enabled": true,
+  "accessTokenLifespan": 300,
+  "clientScopes": [
+    {
+      "name": "orders.read",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "false" }
+    },
+    {
+      "name": "orders.write",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "false" }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "order-service-cli",
+      "description": "LOCAL ONLY: machine client with read and write access",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "local-cli-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "defaultClientScopes": ["orders.read", "orders.write"],
+      "optionalClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "audience-order-service",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": { "included.custom.audience": "order-service", "access.token.claim": "true", "id.token.claim": "false" }
+        }
+      ]
+    },
+    {
+      "clientId": "order-service-reader",
+      "description": "LOCAL ONLY: machine client with read access",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "local-reader-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "defaultClientScopes": ["orders.read"],
+      "optionalClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "audience-order-service",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": { "included.custom.audience": "order-service", "access.token.claim": "true", "id.token.claim": "false" }
+        }
+      ]
+    }
+  ]
+}

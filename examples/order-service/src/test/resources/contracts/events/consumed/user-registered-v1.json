@@ -1,0 +1,17 @@
+{
+  "eventId": "0b4f8c1e-7d2a-4f5b-9c3e-1a2b3c4d5e6f",
+  "eventType": "UserRegistered",
+  "schemaVersion": 1,
+  "occurredAt": "2026-10-31T10:15:30Z",
+  "source": "user-service",
+  "aggregateId": "42",
+  "correlationId": "checkout-42",
+  "causationId": null,
+  "payload": {
+    "userId": 42,
+    "email": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "registeredAt": "2026-10-31T10:15:30Z",
+    "version": 0
+  }
+}

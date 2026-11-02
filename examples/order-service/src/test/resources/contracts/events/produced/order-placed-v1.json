@@ -1,0 +1,22 @@
+{
+  "eventId": "0b4f8c1e-7d2a-4f5b-9c3e-1a2b3c4d5e6f",
+  "eventType": "OrderPlaced",
+  "schemaVersion": 1,
+  "occurredAt": "2026-10-31T10:15:30Z",
+  "source": "order-service",
+  "aggregateId": "1001",
+  "correlationId": "checkout-42",
+  "causationId": null,
+  "payload": {
+    "orderId": 1001,
+    "userId": 42,
+    "currency": "EUR",
+    "totalAmount": "25.50",
+    "lines": [
+      { "lineNo": 1, "sku": "SKU-1", "quantity": 2, "unitPrice": "10.00", "lineTotal": "20.00" },
+      { "lineNo": 2, "sku": "SKU-2", "quantity": 1, "unitPrice": "5.50", "lineTotal": "5.50" }
+    ],
+    "placedAt": "2026-10-31T10:15:30Z",
+    "version": 0
+  }
+}

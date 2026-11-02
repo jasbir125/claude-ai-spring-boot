@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: user-service
+  threads:
+    virtual:
+      enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  data:
+    web:
+      pageable:
+        max-page-size: 100
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:15432/users}
+    username: ${DB_USERNAME:users}
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # the outbox stores the serialized envelope; the relay sends it unchanged
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        delivery.timeout.ms: 30000
+        request.timeout.ms: 10000
+    template:
+      observation-enabled: true
+
+server:
+  shutdown: graceful
+
+app:
+  security:
+    issuer-uri: ${OAUTH2_ISSUER_URI:http://localhost:8180/realms/demo}
+    audience: ${OAUTH2_AUDIENCE:user-service}
+  messaging:
+    source: ${spring.application.name}
+    user-events-topic: ${USER_EVENTS_TOPIC:user.user.events.v1}
+    create-topics: ${KAFKA_CREATE_TOPICS:true}   # false in shared environments (topics provisioned via IaC)
+    partitions: ${USER_EVENTS_PARTITIONS:3}
+    replicas: ${USER_EVENTS_REPLICAS:1}          # >= 3 in production
+  outbox:
+    poll-interval-ms: ${OUTBOX_POLL_INTERVAL_MS:500}
+    batch-size: 100
+    send-timeout: 10s
+    retention: 7d
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        readiness:
+          include: readinessState,db
+  observations:
+    key-values:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    correlation: "[${spring.application.name:},%X{correlationId:-}] "
+  include-application-name: false

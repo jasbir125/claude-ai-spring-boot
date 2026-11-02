@@ -1,0 +1,59 @@
+{
+  "realm": "demo",
+  "enabled": true,
+  "accessTokenLifespan": 300,
+  "clientScopes": [
+    {
+      "name": "users.read",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "false" }
+    },
+    {
+      "name": "users.write",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "false" }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "user-service-cli",
+      "description": "LOCAL ONLY: machine client with read and write access",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "local-cli-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "defaultClientScopes": ["users.read", "users.write"],
+      "optionalClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "audience-user-service",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": { "included.custom.audience": "user-service", "access.token.claim": "true", "id.token.claim": "false" }
+        }
+      ]
+    },
+    {
+      "clientId": "user-service-reader",
+      "description": "LOCAL ONLY: machine client with read access",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "local-reader-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "defaultClientScopes": ["users.read"],
+      "optionalClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "audience-user-service",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": { "included.custom.audience": "user-service", "access.token.claim": "true", "id.token.claim": "false" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="enterprise-spring-boot">
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#6639ba"/>
+  <!-- three connected services -->
+  <line x1="40" y1="44" x2="88" y2="44" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <line x1="40" y1="44" x2="64" y2="88" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <line x1="88" y1="44" x2="64" y2="88" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <circle cx="40" cy="44" r="14" fill="#7ee787" stroke="#ffffff" stroke-width="5"/>
+  <circle cx="88" cy="44" r="14" fill="#79c0ff" stroke="#ffffff" stroke-width="5"/>
+  <circle cx="64" cy="88" r="14" fill="#ffa657" stroke="#ffffff" stroke-width="5"/>
+</svg>

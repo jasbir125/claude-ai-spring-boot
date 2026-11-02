@@ -1,0 +1,53 @@
+# Local dependencies only. Passwords/secrets below are for local development and must never be reused elsewhere.
+# Running next to user-service? Its compose file already provides Kafka on 9092: start only
+# `docker compose up -d --wait postgres keycloak` here, so both services share one broker (see README).
+name: order-service
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orders
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-orders-local}
+    ports:
+      - "${POSTGRES_PORT:-15433}:5432"   # 15433: no clash with a local PostgreSQL or user-service (15432)
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orders -d orders"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  kafka:
+    # single-node KRaft broker; the image defaults advertise localhost:9092
+    image: apache/kafka:4.2.2
+    ports:
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+
+  keycloak:
+    # OIDC issuer for local tokens: realm "orders" with clients order-service-cli (read+write) and order-service-reader
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin-local}
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "8181:8080"   # 8181: no clash with user-service's Keycloak (8180)
+    volumes:
+      - ./local/keycloak/orders-realm.json:/opt/keycloak/data/import/orders-realm.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  postgres-data:

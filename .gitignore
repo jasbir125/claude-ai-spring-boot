@@ -1,0 +1,14 @@
+# Build output (examples/*)
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Local
+*.log
+.env
+.claude/

@@ -1,0 +1,27 @@
+{
+  "name": "enterprise-spring-boot",
+  "displayName": "Enterprise Spring Boot",
+  "description": "Learning-sized Spring Boot 4.x / Java 21+ plugin: an architect, engineer, reviewer, and docs agent with skills for REST, JPA/Flyway, security, testing, and event-driven Kafka services (outbox, idempotent consumers, DLT, sagas).",
+  "version": "3.0.0",
+  "author": {
+    "name": "Jasbir Singh"
+  },
+  "keywords": [
+    "spring-boot",
+    "java",
+    "maven",
+    "enterprise",
+    "microservices",
+    "event-driven",
+    "kafka",
+    "saga",
+    "outbox",
+    "jpa",
+    "flyway",
+    "testing",
+    "lombok",
+    "architecture",
+    "mermaid"
+  ],
+  "license": "MIT"
+}
