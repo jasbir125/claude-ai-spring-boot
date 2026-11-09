@@ -15,6 +15,7 @@ Create a new Spring Boot service from: `$ARGUMENTS`
    - Entities, Flyway migrations, repositories, DTO records, services, controllers, Problem Details exception handler
    - For events: envelope, event records, outbox writer + relay and outbox table (produce); idempotent listener + inbox table, error handler with DLT (consume)
    - `application.yml` with the production defaults from `spring-boot-engineer`, all environment-specific values externalized
+   - Logging, always added without being asked, per `spring-boot` → `references/logging.md`: `Correlation` and `CorrelationIdFilter`, the `logging.pattern.correlation` setting, and `@Slf4j` log lines in services, the exception handler, the outbox relay, listeners, and clients
    - Tests: unit, slice, and Testcontainers integration tests (database, plus Kafka with duplicate and DLT cases when events are used)
    - `compose.yaml` with every local dependency, CI pipeline (match existing provider, default GitHub Actions), `.gitignore`
    - `README.md` (and `docs/events.md` with events) written from the generated code using the `docs-writer` agent's templates

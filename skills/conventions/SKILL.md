@@ -61,7 +61,8 @@ These apply as soon as a service sends or receives messages or calls another ser
 - **Outbound HTTP:** an `@HttpExchange` client with connect and read timeouts, retries only for operations that are safe to repeat, a circuit breaker for remote dependencies, and a `503` Problem Details response when the dependency fails, without passing its error text through.
 - **No transaction stays open during a remote call or a broker send.** The outbox relay's small, time-limited batch is the one documented exception.
 - **Business processes across services are sagas** with a compensating step for each step and explicit timeouts (`architecture` → `references/saga.md`).
-- **Correlation:** trace context and a `correlationId` travel over HTTP and Kafka and appear in logs; observation is on for HTTP clients and listeners.
+- **Correlation:** trace context and a `correlationId` travel over HTTP and Kafka and appear in logs; observation is on for HTTP clients and listeners. Every service has a `CorrelationIdFilter` and the `logging.pattern.correlation` setting.
+- **Logging:** `@Slf4j` with placeholders; `INFO` for state changes, `WARN` for recovered failures, `ERROR` once per unexpected failure with the exception; no secrets, personal data, or payloads. Where each layer logs: `spring-boot` → `references/logging.md`. Generated and changed code gets these log lines automatically; the engineer agent adds them and the reviewer flags their absence.
 - **Scheduled jobs in services with several replicas** coordinate through `FOR UPDATE SKIP LOCKED`, ShedLock, or a Kubernetes CronJob.
 - **Decisions that are hard to undo** (broker, splitting a service, consistency model) are written down as an ADR in `docs/adr/`.
 

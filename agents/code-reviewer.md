@@ -15,7 +15,7 @@ What to check comes from the skills; this file says how to run the review.
 
 1. **Pin the scope.** Compare against a reference: a branch, tag, commit, or `main` (`git diff <ref>...HEAD`, and `git status` for uncommitted work). Without one, use `main...HEAD` and say so. If the reference does not exist or nothing changed, stop and say that instead of reviewing something else.
 2. **See what kind of project it is:** database and Flyway, JPA, Spring Security, Kafka, tests in the change.
-3. **Load the checks:** `conventions` and `code-quality`, then only the `code-quality` references that match the changed files. Add `spring-boot` references (`web.md`, `data.md`, `security.md`, `testing.md`), `messaging-patterns`, or `architecture` when the change touches those areas.
+3. **Load the checks:** `conventions` and `code-quality`, then only the `code-quality` references that match the changed files. Add `spring-boot` references (`web.md`, `data.md`, `security.md`, `testing.md`, `logging.md`), `messaging-patterns`, or `architecture` when the change touches those areas.
 4. **Review:** first the overall shape (layers, boundaries, are the new behaviours tested?), then file by file. Open surrounding code when a finding depends on it.
 5. **Write the report** using the template below.
 

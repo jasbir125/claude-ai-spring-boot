@@ -79,6 +79,7 @@ flowchart LR
 | Type this | What happens |
 |-----------|-------------|
 | `/enterprise-spring-boot:create-service <name> --db postgres --events both` | Claude builds a complete, tested service and checks that it compiles and that all tests pass |
+| `/enterprise-spring-boot:add-logging [path]` | Claude adds the correlation filter, log pattern, and log lines in every layer of an existing service, then builds and tests it |
 | `/enterprise-spring-boot:review main` | The reviewer checks what changed compared to `main` and gives a verdict: approve, approve with comments, or request changes |
 
 ---
@@ -148,7 +149,7 @@ Then type:
 /plugin
 ```
 
-You should see `enterprise-spring-boot` marked **enabled**. Typing `/enterprise-spring-boot:` should list `create-service` and `review`.
+You should see `enterprise-spring-boot` marked **enabled**. Typing `/enterprise-spring-boot:` should list `create-service`, `add-logging`, and `review`.
 
 > The plugin lives in Claude **Code**. It does not appear in a normal Claude chat on claude.ai or in the Claude Desktop "Chat" window. Those have their own, separate plugin lists.
 
@@ -319,10 +320,10 @@ It was checked by running `./mvnw verify` again outside the plugin session: **11
 .
 ├── .claude-plugin/          # plugin.json (name, version) and marketplace.json (the plugin list)
 ├── agents/                  # the four specialists
-├── commands/                # the two shortcuts: create-service, review
+├── commands/                # the three shortcuts: create-service, add-logging, review
 ├── skills/                  # the handbook
 │   ├── conventions/         #   house rules
-│   ├── spring-boot/         #   web, data, security, testing guides
+│   ├── spring-boot/         #   web, data, security, testing, logging guides
 │   ├── messaging-patterns/  #   messages between services (outbox, Kafka, contracts)
 │   ├── architecture/        #   splitting systems, multi-service actions (sagas), decision records
 │   └── code-quality/        #   the review checklist

@@ -38,7 +38,7 @@ A complex domain may instead use one package per business module (`architecture`
 
 ## How the Code Should Look
 
-The details are in `spring-boot` (`references/web.md`, `data.md`, `security.md`, `testing.md`). The essentials:
+The details are in `spring-boot` (`references/web.md`, `data.md`, `security.md`, `testing.md`, `logging.md`). The essentials:
 - Services `@Transactional(readOnly = true)` at class level, `@Transactional` on methods that write.
 - One exception handler extending `ResponseEntityExceptionHandler`; every error is Problem Details; the fallback `500` hides the exception text.
 - Lists as `PagedModel`; `@Version` on editable entities and `409` when a client edits an outdated version.
@@ -46,6 +46,16 @@ The details are in `spring-boot` (`references/web.md`, `data.md`, `security.md`,
 - Typed `@ConfigurationProperties` records; no secrets in code or `application.yml`.
 - `RestClient` behind `@HttpExchange` interfaces for calls to other services.
 - `application.yml` starts from the defaults in `spring-boot` → "Default application.yml".
+
+## Logging Is Automatic
+
+Whether you create a service or change an existing one, add the logging yourself; the user should never have to ask for it. Follow `spring-boot` → `references/logging.md`.
+
+- **New service:** generate `Correlation` and `CorrelationIdFilter`, the `logging:` block in `application.yml`, and `@Slf4j` log lines at every point in the "Where to Log" table.
+- **Existing service:** first check that the filter and the `logging:` block exist; add them if missing. Then, for every class you add or change, add the log lines its layer needs (a new service method logs the state change, a new listener logs handled messages and duplicates, a new client logs retries and final failures, a new exception handler method logs at the right level). Do not add lines to code you did not touch, and do not change the log style the project already uses.
+- Replace hand-made loggers, `System.out`, and `printStackTrace()` in the files you touch with `@Slf4j`.
+- Never log secrets, personal data, or payloads, and log each exception once.
+- Mention in your report which log lines and setup you added.
 
 ## When Other Services Are Involved
 
@@ -64,9 +74,9 @@ If it is unclear who owns the data, whether a call should be an event, or what c
 1. Clarify the resources, endpoints, tables, events, and error cases.
 2. Write the Flyway migration (named constraints, indexed foreign keys; outbox and inbox tables when messaging is involved).
 3. Entities, repositories, and DTOs.
-4. Services with their transactions.
-5. Controllers with validation; publishers, listeners, and clients as the table above requires.
-6. The exception handler.
+4. Services with their transactions and their log lines.
+5. Controllers with validation; publishers, listeners, and clients as the table above requires, each with its log lines.
+6. The exception handler, logging unexpected errors once.
 7. Tests: unit tests for rules; web slice tests for status codes, errors, and permissions; Testcontainers integration tests that apply all migrations and cover the main flow; for consumers a duplicate message and a broken message; for clients a timeout; token validation with real signed tokens.
 8. `application.yml`, `compose.yaml`, CI; `/actuator/health/**` open in the security rules.
 9. `./mvnw clean verify`; integration tests must run, not be skipped. Fix failures at their cause.

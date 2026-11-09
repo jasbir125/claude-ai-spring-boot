@@ -121,6 +121,7 @@ Every environment-specific value is a placeholder with a safe local default, e.g
 | Entities, repositories, Flyway, transactions, locking | `references/data.md` | Touching tables, entities, or queries |
 | Resource server, JWT validation, scopes, actuator access | `references/security.md` | Touching security or auth |
 | Unit, slice, Testcontainers tests, token tests | `references/testing.md` | Writing or fixing tests |
+| `@Slf4j`, where to log, correlation ID filter, JSON logs | `references/logging.md` | Adding logs, setting up a new service, or debugging with logs |
 
 Related skills: `messaging-patterns` (events, outbox, consumers), `architecture` (boundaries, sagas, ADRs). Working templates: `examples/user-service` and `examples/order-service`.
 
