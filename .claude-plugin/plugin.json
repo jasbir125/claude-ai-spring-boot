@@ -1,8 +1,8 @@
 {
   "name": "enterprise-spring-boot",
   "displayName": "Enterprise Spring Boot",
-  "description": "Learning-sized Spring Boot 4.x / Java 21+ plugin: an architect, engineer, reviewer, and docs agent with skills for REST, JPA/Flyway, security, testing, and event-driven Kafka services (outbox, idempotent consumers, DLT, sagas).",
-  "version": "3.1.0",
+  "description": "Learning-sized Spring Boot 4.x / Java 21+ plugin: an architect, engineer, reviewer, and docs agent with skills for REST, JPA/Flyway, security, testing, and event-driven Kafka services (outbox, idempotent consumers, DLT, sagas), and RAG services with Spring AI and pgvector.",
+  "version": "3.2.0",
   "author": {
     "name": "Jasbir Singh"
   },
@@ -21,7 +21,10 @@
     "testing",
     "lombok",
     "architecture",
-    "mermaid"
+    "mermaid",
+    "rag",
+    "spring-ai",
+    "pgvector"
   ],
   "license": "MIT"
 }

@@ -6,10 +6,10 @@ This is an add-on (a "plugin") for **Claude Code**, the AI coding assistant that
 
 Once installed, it teaches Claude how to build Java backend services with **Spring Boot** the way experienced teams do. That includes services that talk to each other through messages (events), not only through direct calls.
 
-You can think of it as a **company handbook plus four specialists** that Claude follows every time:
+You can think of it as a **company handbook plus six specialists** that Claude follows every time:
 
 - the handbook says *how* code must be written (the rules)
-- the specialists do the work: one designs, one builds, one reviews, and one writes the documentation
+- the specialists do the work: one designs, two build (services and RAG), two review (code and RAG), and one writes the documentation
 
 It is also a **learning project**: it is small on purpose, so you can see how skills, agents, and commands work together.
 
@@ -55,13 +55,15 @@ flowchart LR
 
 ## What's inside
 
-### The four specialists (agents)
+### The six specialists (agents)
 
 | Agent | What it does for you | What it is allowed to do |
 |-------|---------------------|--------------------------|
 | `java-architect` | Plans the system before any code is written: which service owns which data, when services talk directly or through events, what happens when something fails. Draws diagrams. | Reads code, writes only design documents |
 | `spring-boot-engineer` | Writes the actual service following all the rules, with tests | Reads, writes, and runs the build |
 | `code-reviewer` | Checks your changes and lists problems from most to least serious, with file and line | Read-only, it never changes code |
+| `rag-engineer` | Builds document-question-answering (RAG) services: ingestion of many documents, search that respects who may see what, answers with citations, tests | Reads, writes, and runs the build |
+| `rag-evaluator` | Checks a RAG service for missing pipeline stages, permission leaks, prompt-injection exposure, and unbounded cost | Read-only, it never changes code |
 | `docs-writer` | Writes the README, the event list, and **diagrams of every flow**, all taken from the real code, and keeps them up to date | Writes documentation only |
 
 ### The handbook (skills)
@@ -72,6 +74,7 @@ flowchart LR
 | `spring-boot` | How to build web APIs, store data in a database, secure the service, and test it |
 | `messaging-patterns` | How services send each other messages safely, without losing or doubling them |
 | `architecture` | How to split a system into services and handle actions that span several services |
+| `rag-patterns` | How to build RAG services: the 12-stage pipeline, pgvector, ingestion of thousands of documents, permission-filtered search, grounded answers, evaluation |
 | `code-quality` | The checklist the reviewer uses |
 
 ### The shortcuts (commands)
@@ -79,6 +82,9 @@ flowchart LR
 | Type this | What happens |
 |-----------|-------------|
 | `/enterprise-spring-boot:create-service <name> --db postgres --events both` | Claude builds a complete, tested service and checks that it compiles and that all tests pass |
+| `/enterprise-spring-boot:create-rag-service <name>` | Claude builds a complete, tested RAG service (Spring AI, pgvector) and checks that it compiles and that all tests pass |
+| `/enterprise-spring-boot:add-rag [path]` | Claude adds RAG to an existing service without changing its existing behaviour |
+| `/enterprise-spring-boot:eval-rag <url>` | Claude runs your list of real questions against a running RAG service and reports how often the right document is found |
 | `/enterprise-spring-boot:add-logging [path]` | Claude adds the correlation filter, log pattern, and log lines in every layer of an existing service, then builds and tests it |
 | `/enterprise-spring-boot:review main` | The reviewer checks what changed compared to `main` and gives a verdict: approve, approve with comments, or request changes |
 
@@ -149,7 +155,7 @@ Then type:
 /plugin
 ```
 
-You should see `enterprise-spring-boot` marked **enabled**. Typing `/enterprise-spring-boot:` should list `create-service`, `add-logging`, and `review`.
+You should see `enterprise-spring-boot` marked **enabled**. Typing `/enterprise-spring-boot:` should list `create-service`, `add-logging`, `create-rag-service`, `add-rag`, `eval-rag`, and `review`.
 
 > The plugin lives in Claude **Code**. It does not appear in a normal Claude chat on claude.ai or in the Claude Desktop "Chat" window. Those have their own, separate plugin lists.
 
@@ -319,12 +325,13 @@ It was checked by running `./mvnw verify` again outside the plugin session: **11
 ```
 .
 ├── .claude-plugin/          # plugin.json (name, version) and marketplace.json (the plugin list)
-├── agents/                  # the four specialists
-├── commands/                # the three shortcuts: create-service, add-logging, review
+├── agents/                  # the six specialists
+├── commands/                # the six shortcuts: create-service, add-logging, create-rag-service, add-rag, eval-rag, review
 ├── skills/                  # the handbook
 │   ├── conventions/         #   house rules
 │   ├── spring-boot/         #   web, data, security, testing, logging guides
 │   ├── messaging-patterns/  #   messages between services (outbox, Kafka, contracts)
+│   ├── rag-patterns/        #   RAG pipeline, pgvector, ingestion, retrieval, evaluation
 │   ├── architecture/        #   splitting systems, multi-service actions (sagas), decision records
 │   └── code-quality/        #   the review checklist
 ├── examples/

@@ -26,6 +26,7 @@ Read only what matches the change.
 | Kafka listeners or templates, outbox/inbox, events, HTTP clients, retries, caches, scheduled jobs | `references/distributed.md` |
 | Entities, SQL migrations, `spring.jpa.*` | `conventions` → Database Schema with Flyway, and `spring-boot` → `references/data.md` |
 | Anything with real logic | `references/smells.md` |
+| A RAG service (Spring AI, vector store, embeddings, ingestion, prompts) | `rag-patterns` (`references/pipeline.md`, `security.md`) and the `rag-evaluator` agent |
 | Any new or changed service, listener, client, relay, or exception handler | `spring-boot` → `references/logging.md` ("Review Signals") |
 
 Where the underlying rules live:
